@@ -1,8 +1,8 @@
-package reserve;
+package reserve.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import producer.PhoneNumberProducer;
+import reserve.producer.PhoneNumberProducer;
 
 @RestController
 @RequestMapping("/reserve")

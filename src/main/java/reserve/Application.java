@@ -1,17 +1,23 @@
 package reserve;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import producer.PhoneNumberProducer;
+import org.springframework.stereotype.Component;
+import reserve.configuration.KafkaProperties;
+import reserve.producer.PhoneNumberProducer;
 
 import java.util.Arrays;
 import java.util.Properties;
 
 @SpringBootApplication
 public class Application {
+
+    @Autowired
+    public KafkaProperties kafkaProps;
 
     public static void main(String[] args){
         SpringApplication.run(Application.class, args);
@@ -34,10 +40,10 @@ public class Application {
     public PhoneNumberProducer phoneNumberProducer(){
         PhoneNumberProducer phoneNumberProducer = new PhoneNumberProducer();
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-        props.put("acks", "all");
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("bootstrap.servers", kafkaProps.getBootStrapServers());
+        props.put("acks", kafkaProps.getAcks());
+        props.put("key.serializer", kafkaProps.getKeySerializer());
+        props.put("value.serializer", kafkaProps.getValueSerializer());
         phoneNumberProducer.setProps(props);
         return phoneNumberProducer;
     }
